@@ -2356,7 +2356,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             return;
         }
 
-        var amount = (loanSanctioned / loanPeriod).toFixed(2);
+        var amount = (loanSanctioned / loanPeriod);
 		document.getElementById('inst_amount').value =formatNumberWithIndianSeparationForOninput(amount);
 
 
@@ -2555,12 +2555,15 @@ function Onschemetype1() {
     var scheme;
     if (schemetype === 'LA') {
         scheme = 'LSRET';
+        
     } else if (schemetype === 'LAEMI') {
         scheme = 'LAEMI';
+        //document.getElementById("emiInstallmentSection").style.display = (schemetype === 'LAEMI') ? "flex" : "none";
     } else {
         scheme = 'TDFIXED';
     }
     console.log("Mapped scheme to send:", scheme);
+   
 
     $.ajax({
         url: 'Onschemetype1document',
@@ -2590,15 +2593,16 @@ function Onschemetype1() {
                     schemeDescription = "UNKNOWN SCHEME";
             }
 
-            // Hide all divs initially
+            // Hide both sections
             document.getElementById("Acc_TermDeposit").style.display = "none";
             document.getElementById("Acc_LeaseAccount").style.display = "none";
 
-            // Show based on the response.schemetype
+            // Show based on response
             if (response.schemetype === 'TD') {
                 document.getElementById("Acc_TermDeposit").style.display = "block";
             } else if (response.schemetype === 'LA' || response.schemetype === 'LAEMI') {
                 document.getElementById("Acc_LeaseAccount").style.display = "block";
+                document.getElementById("principalInstallmentSection").style.display = "block";
             }
 
             $("#ca_glcode").val(response.gl_code);
@@ -2609,8 +2613,7 @@ function Onschemetype1() {
         }
     });
 }
-
-	</script>
+</script>
 <script>
 	function SmsFunction(){
 		
@@ -5122,15 +5125,27 @@ function SmsFunction() {
 												</div>
 												<div class="row formline ml-4  mb-1"
 													style="font-size: 15px; font-weight: 500; padding: 0px 0px 2px 0px;">
+												<!-- Principal Installment -->
+												<div id="principalInstallmentSection" style="display:none;" class="d-flex">
 													<div class="col-sm-2 ml-2">
-														<label for="sche_type">Installment Amount </label>
+														<label for="inst_amount">Principal Installment</label>
 													</div>
 													<div class="col-sm-2">
-														<input type="text"
-															class="form-control form-control-sm bg-white border border-dark"
-															maxlength="10" id="inst_amount" name="inst_amount"
-															autocomplete="off" readonly="readonly" />
+														<input type="text" class="form-control form-control-sm bg-white border border-dark" maxlength="10"
+															id="inst_amount" name="inst_amount" autocomplete="off" readonly="readonly" />
 													</div>
+												</div>
+												
+												<!-- EMI Installment -->
+												<div id="emiInstallmentSection" style="display:none;" class="d-flex">
+													<div class="col-sm-2 ml-2">
+														<label for="emi">EMI Installment</label>
+													</div>
+													<div class="col-sm-2">
+														<input type="text" class="form-control form-control-sm bg-white border border-dark" maxlength="10" id="emi"
+															name="emi" autocomplete="off" readonly="readonly" />
+													</div>
+												</div>
 													<div class="col-sm-1"></div>
 													<div class="col-sm-2">
 														<label for="sche_type">Installment (%) </label>

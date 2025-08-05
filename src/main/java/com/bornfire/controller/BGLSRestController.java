@@ -1935,15 +1935,15 @@ public class BGLSRestController {
 				entity.setFrom_date(record.getInstallmentFromDate());
 				entity.setInstallment_date(record.getInstallmentDate());
 				// entity.setInstallment_amt(record.getInterestAmount());
-				entity.setInterest_amt(record.getInterestAmount());
-				entity.setPrincipal_amt(record.getPrincipalAmount());
-				entity.setPrincipal_outstanding(record.getPrincipalAmountOutstanding());
+				entity.setInterest_amt(record.getInterestAmount().setScale(0, RoundingMode.HALF_UP));
+				entity.setPrincipal_amt(record.getPrincipalAmount().setScale(0, RoundingMode.HALF_UP));
+				entity.setPrincipal_outstanding(record.getPrincipalAmountOutstanding().setScale(0, RoundingMode.HALF_UP));
 				entity.setInstallment_description(record.getInstallmentDescription());
 				entity.setCharges_amt(BigDecimal.ZERO);
 				if (record.getInstallmentDescription().equalsIgnoreCase("Regular Installment")) {
-					entity.setInstallment_amt(record.getInterestAmount().add(record.getPrincipalAmount()));
+					entity.setInstallment_amt(record.getInterestAmount().add(record.getPrincipalAmount().setScale(0, RoundingMode.HALF_UP)));
 				} else {
-					entity.setInstallment_amt(record.getInterestAmount());
+					entity.setInstallment_amt(record.getInterestAmount().setScale(0, RoundingMode.HALF_UP));
 				}
 
 				noOfInstallment++;
